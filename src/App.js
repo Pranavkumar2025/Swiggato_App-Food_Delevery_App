@@ -1,25 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense, lazy } from "react";
+import ReactDOM from "react-dom/client";
+import {createBrowserRouter, RouterProvider, Outlet} from "react-router-dom";
+import "../index.css";
+import Header from "./components/Header";
+import Body from "./components/Body";
+import About from "./components/About";
+import ContactUs from "./components/ContactUs";
+// import Grocery from "./components/Grocery";
+import RestrauntMenu from "./components/RestrauntMenu";
 
-function App() {
+const Grocery = lazy(()=>import("./components/Grocery"));//this process is called->{Chunking, CodeSplitting, Dynamic Bundling, lazyLoading, onDemand Loading}
+
+
+const AppLayout = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Header />
+      <Outlet/>
     </div>
   );
-}
+};
 
-export default App;
+const AppRouter = createBrowserRouter(
+  [
+    {
+      path: '/',
+      children: [
+        {
+          path: '/',
+          element:<Body/>
+        },
+        {
+          path: '/about',
+          element:<About/>, 
+        },
+        {
+          path: '/contact',
+          element:<ContactUs/>, 
+        },
+        {
+          path: '/grocery',
+          element:<Suspense fallback={<h1>Loading...</h1>}><Grocery/></Suspense>, 
+        },
+        {
+          path: '/restaurant/:resId',
+          element: <RestrauntMenu/>, 
+        }
+      ],
+      element: <AppLayout/>
+    },
+   
+  ]
+)
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<RouterProvider router={AppRouter}/>);
