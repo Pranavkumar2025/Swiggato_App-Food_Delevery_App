@@ -8,16 +8,20 @@ import About from "./components/About";
 import ContactUs from "./components/ContactUs";
 // import Grocery from "./components/Grocery";
 import RestrauntMenu from "./components/RestrauntMenu";
+import { Provider } from "react-redux";
+import appStore from "./utils/appStore";
 
 const Grocery = lazy(()=>import("./components/Grocery"));//this process is called->{Chunking, CodeSplitting, Dynamic Bundling, lazyLoading, onDemand Loading}
 
 
 const AppLayout = () => {
   return (
+    <Provider store={appStore}>
     <div className="app">
       <Header />
       <Outlet/>
     </div>
+    </Provider>
   );
 };
 
