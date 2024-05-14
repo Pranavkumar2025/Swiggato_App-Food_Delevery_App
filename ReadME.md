@@ -1,5 +1,4 @@
 ## title: Namaste JavaScript
-
 <br>
 
 # Episode 1 : Execution Context
